@@ -5,14 +5,20 @@
 <title>What's Open?</title>
 <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="accordian-src-mod.js"></script>
 <script type="text/javascript" src="format.js"></script>
 <script type="text/javascript" src="KL-open.js"></script>
 <script type="text/javascript" src="data.js"></script>
 <script type="text/javascript" src="jquery-ui-1.8.18.custom.min.js"></script>
 <script type="text/javascript" src="initialize.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#tabs").tabs();
+});
+</script>
 
 <div id="menu">
 &nbsp;&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;&nbsp;About
@@ -22,88 +28,40 @@
 What's <span style="color:#0F4D92">Open?</span>
 </div>
 
-
-<div id="basic-accordian" ><!--Parent of the Accordion-->
-
-<input type="button" value="Hide Open" id="open-toggler">
-<input type="button" value="Show Closed" id="closed-toggler">
-
 <!--<form>
 <input type="text" name="usertime">
 <input type="button" value="What's open at: " onClick="CURTIME=usertime"><br />
 </form>
 -->
 
-<div class="tab_container">
-  <div id="test1-header" class="accordion_headings header_highlight" >Restaurants</div>
-  <div id="test2-header" class="accordion_headings" >Dining Halls</div>
-  <div id="test3-header" class="accordion_headings" >Libraries</div>
-  <div id="test4-header" class="accordion_headings" >Facilities</div>
-</div>
+<input type="button" value="Hide Open" id="open-toggler">
+<input type="button" value="Show Closed" id="closed-toggler">
 
-<div style="float:left;">
-  <div id="test1-content">
-	<div class="accordion_child">
+<div id="tabs">
+  <ul>
+    <li><a href="#tab-1"><span>Restaurants</span></a></li>
+    <li><a href="#tab-2"><span>Dining Halls</span></a></li>
+    <li><a href="#tab-3"><span>Libraries</span></a></li>
+    <li><a href="#tab-4"><span>Facilities</span></a></li>
+  </ul>
+  <div id="tab-1">
     	<ul id="rest" class="wd-open">Error displaying open restaurant list</ul>
         <ul id="crest" class="wd-closed hidden">Error displaying closed restaurant list</ul>
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-     </div>
   </div>
-  
-  <div id="test2-content">
-	<div class="accordion_child">
+  <div id="tab-2">
         <ul id="DHs" class="wd-open">Error displaying open dining hall list</ul>
         <ul id="cDHs" class="wd-closed hidden">Error displaying closed dining hall list</ul>
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
 
-    </div>
   </div>
-  
-  <div id="test3-content">
-	<div class="accordion_child">
+  <div id="tab-3">
         <ul id="libs" class="wd-open">Error displaying open library list</ul>
         <ul id="clibs" class="wd-closed hidden">Error displaying closed library list</ul>
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-
-    </div>
   </div>
-
-  <div id="test4-content">
-	<div class="accordion_child">
+  <div id="tab-4">
         <ul id="facs" class="wd-open">Error displaying open facilities list</ul>
         <ul id="cfacs" class="wd-closed">Error displaying closed facilities list</ul>
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-        <br /><br />
-
-    </div>
   </div>
 </div>
-
-
-
-</div><!--End of accordion parent-->
-
-
-
 
 
 </body>

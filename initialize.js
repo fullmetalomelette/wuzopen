@@ -1,5 +1,5 @@
 $(document).ready(function() {
-new Accordian('basic-accordian',5,'header_highlight');
+//new Accordian('basic-accordian',5,'header_highlight');
 dispO(openRests,'rest',CURTIME);
 dispO(openLibs,'libs',CURTIME);
 dispO(openDHs,'DHs',CURTIME);
