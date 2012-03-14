@@ -89,8 +89,8 @@ function dispO(list, dest, date) {
   for (var i=0;i<list.length;i++) {
     var li = document.createElement('li');
     var CT = closesIn(list[i],date);
-  li.innerHTML = "{0}&nbsp&nbsp&nbsp&nbsp{3}&nbsp&nbsp&nbsp&nbsp Closes in: {1} hrs {2} mins".format(list[i].name,
-    Math.floor(CT), htom(CT), formatHrs( list[i].hours) );
+  li.innerHTML = "{0}&nbsp&nbsp&nbsp&nbsp Closes in: {1} hrs {2} mins".format(list[i].name,
+    Math.floor(CT), htom(CT));
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }
@@ -102,8 +102,8 @@ function dispC(list, dest, date) {
   for (var i=0;i<list.length;i++) {
     var li = document.createElement('li');
     var OT = opensIn(list[i],date);
-  li.innerHTML = "{0}&nbsp&nbsp&nbsp&nbsp{3}&nbsp&nbsp&nbsp&nbsp Opens in: {1} hrs {2} mins".format(list[i].name,
-    Math.floor(OT), htom(OT), inttoday(2) );
+  li.innerHTML = "{0}&nbsp&nbsp&nbsp&nbsp Opens in: {1} hrs {2} mins".format(list[i].name,
+    Math.floor(OT), htom(OT));
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }
