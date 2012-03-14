@@ -108,4 +108,19 @@ function dispC(list, dest, date) {
   }
 }
 
+$(document).ready(function() {
+    $('#open-toggler').toggle(function() {
+      $('.wd-open').addClass('hidden');
+      this.value="Show Open";},
+    function() {
+      $('.wd-open').removeClass('hidden');
+      this.value="Hide Open";});
+    $('#closed-toggler').toggle(function() {
+      $('.wd-closed').removeClass('hidden');
+      this.value="Hide Closed";},
+      function() {
+      $('.wd-closed').addClass('hidden');
+      this.value="Show Closed";}
+      );
+});
 

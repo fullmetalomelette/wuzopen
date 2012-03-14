@@ -79,3 +79,20 @@ body {
 	padding-top: 6px;
 	color: #FFFFFF;
 }
+
+.wd-open {
+
+}
+
+.wd-closed {
+
+
+}
+
+.hidden{
+    display:none;
+}
+
+.shown{
+    display:inline;
+}
