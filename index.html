@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>What's Open?</title>
+<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+<script type="text/javascript" src="accordian.pack.js"></script>
+<script type="text/javascript" src="format.js"></script>
+<script type="text/javascript" src="KL-open.js"></script>
+<script type="text/javascript" src="data.js"></script>
+</head>
+<body onload="new Accordian('basic-accordian',5,'header_highlight');
+dispO(openRests,'rest',CURTIME);
+dispO(openLibs,'libs',CURTIME);
+dispO(openDHs,'DHs',CURTIME);
+dispO(openFacs,'facs',CURTIME);
+dispC(closedRests,'crest',CURTIME);
+dispC(closedLibs,'clibs',CURTIME);
+dispC(closedDHs,'cDHs',CURTIME);
+dispC(closedFacs,'cfacs',CURTIME);">
+
+<div id="menu">
+&nbsp;&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;&nbsp;About
+</div>
+
+<div id="title">
+What's <span style="color:#0F4D92">Open?</span>
+</div>
+
+<div id="basic-accordian" ><!--Parent of the Accordion-->
+
+<!--<form>
+<input type="text" name="usertime">
+<input type="button" value="What's open at: " onClick="CURTIME=usertime"><br />
+</form>
+-->
+
+<div class="tab_container">
+  <div id="test1-header" class="accordion_headings header_highlight" >Restaurants</div>
+  <div id="test2-header" class="accordion_headings" >Dining Halls</div>
+  <div id="test3-header" class="accordion_headings" >Libraries</div>
+  <div id="test4-header" class="accordion_headings" >Facilities</div>
+</div>
+
+<div style="float:left;">
+  <div id="test1-content">
+	<div class="accordion_child">
+    	<ul id="rest">Error displaying open restaurant list</ul>
+        <ul id="crest">Error displaying closed restaurant list</ul>
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+     </div>
+  </div>
+  
+  <div id="test2-content">
+	<div class="accordion_child">
+        <ul id="DHs">Error displaying open dining hall list</ul>
+        <ul id="cDHs">Error displaying closed dining hall list</ul>
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+
+    </div>
+  </div>
+  
+  <div id="test3-content">
+	<div class="accordion_child">
+        <ul id="libs">Error displaying open library list</ul>
+        <ul id="clibs">Error displaying closed library list</ul>
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+
+    </div>
+  </div>
+
+  <div id="test4-content">
+	<div class="accordion_child">
+        <ul id="facs">Error displaying open facilities list</ul>
+        <ul id="cfacs">Error displaying closed facilities list</ul>
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <br /><br />
+
+    </div>
+  </div>
+</div>
+
+
+
+</div><!--End of accordion parent-->
+
+
+
+
+
+</body>
+</html>
