@@ -1,3 +1,5 @@
+var CURTIME = new Date();
+
 function place(name,hrs) {
   this.name=name;
   this.hours=hrs;

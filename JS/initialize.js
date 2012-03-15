@@ -19,6 +19,9 @@ dispC(closedRests,'crest',x);
 dispC(closedLibs,'clibs',x);
 dispC(closedSnacks,'csnacks',x);
 dispC(closedFacs.concat(closedDHs),'cfacs',x);
+
+$('.wd-open > li').tsort();
+$('.wd-closed > li').tsort();
 }
 
 function initialize() {
