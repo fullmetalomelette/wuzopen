@@ -124,16 +124,24 @@ function dispC(list, dest, date) {
 
 $(document).ready(function() {
     $('#open-toggler').toggle(function() {
-      $('.wd-open').addClass('hidden','slow');
+      $('.wd-open').fadeOut();
+      $('.wd-open').addClass('hidden');
+      $('.wd-open').removeAttr('style');
       this.value="Show Open";},
     function() {
+      $('.wd-open').fadeIn();
       $('.wd-open').removeClass('hidden');
+      $('.wd-open').removeAttr('style');
       this.value="Hide Open";});
     $('#closed-toggler').toggle(function() {
+      $('.wd-closed').fadeIn();
       $('.wd-closed').removeClass('hidden');
+      $('.wd-closed').removeAttr('style');
       this.value="Hide Closed";},
       function() {
+      $('.wd-closed').fadeOut();
       $('.wd-closed').addClass('hidden');
+      $('.wd-closed').removeAttr('style');
       this.value="Show Closed";}
       );
 });
