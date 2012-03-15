@@ -8,8 +8,6 @@
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
 <script type="text/javascript" src="js/misc.js"></script>
-<script type="text/javascript" src="js/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/favorites.js"></script>
 <script type="text/javascript" src="js/jquery.tinysort.min.js"></script>
 <script type="text/javascript" src="js/format.js"></script>
 <script type="text/javascript" src="js/KL-open.js"></script>
@@ -51,10 +49,6 @@ What's <span style="color:#0F4D92">Open?</span>
 </p>
 </div>
 
-<!--<div style="float:right">
-<input type="button" onclick="$('#title').css('background-color','white')" value="Restore Title Background Color">
-</div>-->
-
 <input type="button" value="Hide Open" id="open-toggler">
 <input type="button" value="Show Closed" id="closed-toggler">
 
@@ -64,33 +58,27 @@ What's <span style="color:#0F4D92">Open?</span>
     <li><a href="#tab-2"><span>Coffee/Snacks</span></a></li>
     <li><a href="#tab-3"><span>Libraries</span></a></li>
     <li><a href="#tab-4"><span>Facilities</span></a></li>
-    <li><a href="#tab-5"><span>Favorites</span></a></li>
   </ul>
+  <div id="tab-1" class="tab_content" style="padding:1em 0em;width:793px;">
 
-  <div id="tab-1" class="tab_content">
-<ul id="rest" class="wd-open">Error displaying open restaurant list</ul>
-  <ul id="crest" class="wd-closed hidden">Error displaying closed restaurant list</ul>
+  <h3><a href="#">Open</a></h3>
+  <div><ul id="rest" class="wd-open">Error displaying open restaurant list</ul></div>
+  <h3><a href="#">Closed</a></h3>
+  <div><ul id="crest" class="wd-closed hidden">Error displaying closed restaurant list</ul></div>
   </div>
 
   <div id="tab-2" class="tab_content">
         <ul id="snacks" class="wd-open">Error displaying open snacks/coffeeshops list</ul>
         <ul id="csnacks" class="wd-closed hidden">Error displaying closed snacks/coffeeshops list</ul>
   </div>
-
   <div id="tab-3" class="tab_content">
         <ul id="libs" class="wd-open">Error displaying open library list</ul>
         <ul id="clibs" class="wd-closed hidden">Error displaying closed library list</ul>
   </div>
-
   <div id="tab-4" class="tab_content">
         <ul id="facs" class="wd-open">Error displaying open facilities list</ul>
         <ul id="cfacs" class="wd-closed hidden">Error displaying closed facilities list</ul>
   </div>
-
-    <div id="tab-5" class="tab_content">
-    <p>Coming Soon!</p>
-  </div>
-
 </div>
 </div>
 

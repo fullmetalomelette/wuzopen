@@ -53,14 +53,18 @@ function opensIn(x,now) {
   var time = chour + cmin/60;
 
   var tHrs = x.hours[cday];
+  var j=-1;
+  var min=0;
   if (tHrs[0] instanceof Array) {
     for(var i=0;i<tHrs.length;i++) { //for every pair of opening and closing times
-      if (time < tHrs[0][i]) {
-        return (tHrs[0][i]-time);
+      if (time < tHrs[0][i]) { //j==-1 unless the current time is less than some opening time
+        if (j==-1) j=i;
+        else if (tHrs[0][i] < tHrs[0][j]) j=i;
       }
-      else
-       {return (24-time+tHrs[0][0]);}
+      if (tHrs[0][i] < tHrs[0][min]) min = i; //find min opening time
     }
+    if (j!=-1) {return (tHrs[0][j]-time);}
+    else {return (24-time+tHrs[0][min]);}
   }
   else {
     if(time<tHrs[0])
@@ -122,25 +126,6 @@ function dispC(list, dest, date) {
   }
 }
 
-$(document).ready(function() {
 
-    $('#open-toggler').toggle(function() {
-      $('.wd-open').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
-        $(this).addClass('hidden').removeAttr('style');});
-      this.value="Show Open";},
-    function() {
-      $('.wd-open').slideDown('fast').animate({opacity:100,duration:'slow'},function() {  
-      $('.wd-open').removeClass('hidden').removeAttr('style');});
-      this.value="Hide Open";});
 
-    $('#closed-toggler').toggle(function() {
-      $('.wd-closed').slideDown('fast').animate({opacity:100,duration:'slow'},function() {  
-      $('.wd-closed').removeClass('hidden').removeAttr('style');});
-      this.value="Hide Closed";},
-      function() {
-            $('.wd-closed').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
-        $(this).addClass('hidden').removeAttr('style');});
-      this.value="Show Closed";}
-      );
-});
 
