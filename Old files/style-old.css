@@ -20,7 +20,7 @@ body {
 	margin:0px;
 }
 
-#wrapper{
+#basic-accordian{
 	border:0px solid #EEE;
 	padding:5px;
 	width:800px; /*controls width of whole accordion*/
@@ -32,6 +32,17 @@ body {
 	margin-top:-50px;
 }
 
+#accordion{
+	border:0px solid #EEE;
+	padding:5px;
+	width:800px; /*controls width of whole accordion*/
+	position:relative;
+	left:50%;
+	top:50%;
+	margin-left:-404px;
+	z-index:2;
+	margin-top:-50px;
+}
 
 .accordion_headings{
 	padding:5px;
