@@ -123,25 +123,23 @@ function dispC(list, dest, date) {
 }
 
 $(document).ready(function() {
+
     $('#open-toggler').toggle(function() {
-      $('.wd-open').fadeOut();
-      $('.wd-open').addClass('hidden');
-      $('.wd-open').removeAttr('style');
+      $('.wd-open').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
+        $(this).addClass('hidden').removeAttr('style');});
       this.value="Show Open";},
     function() {
-      $('.wd-open').fadeIn();
-      $('.wd-open').removeClass('hidden');
-      $('.wd-open').removeAttr('style');
+      $('.wd-open').slideDown('fast').animate({opacity:100,duration:'slow'},function() {  
+      $('.wd-open').removeClass('hidden').removeAttr('style');});
       this.value="Hide Open";});
+
     $('#closed-toggler').toggle(function() {
-      $('.wd-closed').fadeIn();
-      $('.wd-closed').removeClass('hidden');
-      $('.wd-closed').removeAttr('style');
+      $('.wd-closed').slideDown('fast').animate({opacity:100,duration:'slow'},function() {  
+      $('.wd-closed').removeClass('hidden').removeAttr('style');});
       this.value="Hide Closed";},
       function() {
-      $('.wd-closed').fadeOut();
-      $('.wd-closed').addClass('hidden');
-      $('.wd-closed').removeAttr('style');
+            $('.wd-closed').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
+        $(this).addClass('hidden').removeAttr('style');});
       this.value="Show Closed";}
       );
 });
