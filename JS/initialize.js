@@ -30,6 +30,7 @@ function initialize() {
     SETTIME.setYear(2000);
     SETTIME.setMonth(4,$("select#weekday_input option:selected").val());
     data_initialize(SETTIME);
+    $("#notifier").html("Time set to " + SETTIME.getHours() +":"+ SETTIME.getMinutes());
  });
   $(".tab_content").togglepanels();
 }
