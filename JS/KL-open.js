@@ -107,7 +107,18 @@ function dispO(list, dest, date) {
   for (var i=0;i<list.length;i++) {
     var li = document.createElement('li');
     var CT = closesIn(list[i],date);
-  li.innerHTML = "{0}&nbsp&nbsp&nbsp&nbsp Closes in: {1} hrs {2} mins".format(list[i].name, Math.floor(CT), htom(CT));
+    $(li).addClass('loc_el');
+    var disphr = Math.floor(CT);
+    var dispmin = htom(CT);
+    var hrtag = "hrs";
+    var mintag = "mins";
+    var rating = "*****";
+    var maplink = "Maplink!";
+    var address = "20 Elm St.";
+    var openhours = "Hours: MWF 11AM - 9PM"
+    if (disphr==1) hrtag = "hr";
+    if (dispmin==1) mintag = "min";
+    $(li).html('<div class="name">{0}</div><div class="timeleft">Closes in {1} {2} {3} {4}</div><div class="ratings hidden showexp">{5}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{7}</div><div class="hours hidden showexp">{8}</div>'.format(list[i].name,disphr,hrtag,dispmin,mintag,rating,maplink,address,openhours ) ).attr('id',list[i].name);
   closesSoon(li,CT);
   printlist.insertBefore(li, printlist.firstChild); 
   }
@@ -120,8 +131,18 @@ function dispC(list, dest, date) {
   for (var i=0;i<list.length;i++) {
     var li = document.createElement('li');
     var OT = opensIn(list[i],date);
-  li.innerHTML = "{0}&nbsp&nbsp&nbsp&nbsp Opens in: {1} hrs {2} mins".format(list[i].name,
-    Math.floor(OT), htom(OT));
+    $(li).addClass('loc_el');
+    var disphr = Math.floor(OT);
+    var dispmin = htom(OT);
+    var hrtag = "hrs";
+    var mintag = "mins";
+    var rating = "*****";
+    var maplink = "Maplink!";
+    var address = "20 Elm St.";
+    var openhours = "Hours: MWF 11AM - 9PM"
+    if (disphr==1) hrtag = "hr";
+    if (dispmin==1) mintag = "min";
+    $(li).html('<div class="name">{0}</div><div class="timeleft">Opens in {1} {2} {3} {4}</div><div class="ratings hidden showexp">{5}</div><div class="map hidden showexp">{6}</div><div class="address hidden showexp">{7}</div><div class="hours hidden showexp">{8}</div>'.format(list[i].name,disphr,hrtag,dispmin,mintag,rating,maplink,address,openhours ) ).attr('id',list[i].name);
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }

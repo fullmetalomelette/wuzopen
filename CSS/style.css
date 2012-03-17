@@ -36,8 +36,8 @@ body {
 .tab_container *{
 	float:left;
 	width:140px; /*controls width of tabs*/
-		border-top-left-radius: 5px;
-		border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
 }
 
 #title{
@@ -75,3 +75,60 @@ body {
 .ui-accordion .ui-accordion-header .ui-icon { position: absolute; left: .5em; top: 50%; margin-top: -8px; }
 .ui-accordion .ui-accordion-content { padding:10px; border-top: 0; margin-top: -2px; position: relative; top: 1px; margin-bottom: 2px; overflow: auto; display: none; zoom: 1; }
 .ui-accordion .ui-accordion-content-active { display: block; }
+
+.loc_el{
+	height:20px;
+	border: 1px solid #000000;
+	border-radius: 5px;
+	margin-top: 4px;
+	margin-right: 2px;
+	margin-bottom: 4px;
+	margin-left: 2px;
+	padding-top: 4px;
+	padding-right: 6px;
+	padding-bottom: 4px;
+	padding-left: 6px;
+	}
+.name{
+	float:left;
+	width: 580px;
+	}
+.timeleft{
+	float:left;
+	}
+.expand{
+	height: 80px;
+	border: 1px solid #000000;
+	border-radius: 5px;
+	margin-top: 4px;
+	margin-right: 2px;
+	margin-bottom: 4px;
+	margin-left: 2px;
+	padding-top: 4px;
+	padding-right: 6px;
+	padding-bottom: 4px;
+	padding-left: 6px;
+	}
+.ratings{
+	border: 1px solid #000000;
+	float:left;
+	margin-top: 10px;
+	padding: 4px;
+	margin-right: 20px;
+	}
+.map{
+	border: 1px solid #000000;
+	float:left;
+	margin-top: 10px;
+	padding: 4px;
+	margin-right: 500px;
+	}
+.address{
+	margin-top: 10px;
+	float:left;
+	width: 500px;
+	}
+.hours{
+	float:right;
+	margin-right:20px;
+	}

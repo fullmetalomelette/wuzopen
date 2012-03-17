@@ -33,8 +33,9 @@ return {
   }
 }
 
-var favlist = new cookieList();
-
+var favlist;
+var favstime;
+var favcookie = new cookieList();
 
 function findPlacesByNames(places,names) {
   var out = new Array();
@@ -47,6 +48,16 @@ function findPlacesByNames(places,names) {
       }
   }
   return out;
+}
+
+
+function toggleCookie(x) {
+  if($.inArray(x, favcookie.items() ) > -1) { //in array
+    favcookie.remove(x);
+  }
+  else {
+    favcookie.add(x);
+  }
 }
 
 

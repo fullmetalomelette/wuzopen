@@ -55,6 +55,10 @@ What's <span style="color:#0F4D92">Open?</span>
 <input type="button" onclick="$('#title').css('background-color','white')" value="Restore Title Background Color">
 </div>-->
 
+<div style="float:right">
+<input type="button" onclick="alert(document.cookie)" value="Show cookie">
+</div>
+
 <input type="button" value="Hide Open" id="open-toggler">
 <input type="button" value="Show Closed" id="closed-toggler">
 
@@ -88,7 +92,8 @@ What's <span style="color:#0F4D92">Open?</span>
   </div>
 
     <div id="tab-5" class="tab_content">
-    <p>Coming Soon!</p>
+    <ul id="fav_locs" class="wd-open">No open favorites</ul>
+    <ul id="cfav_locs" class="wd-closed hidden">No closed favorites</ul>
   </div>
 
 </div>
