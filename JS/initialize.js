@@ -14,11 +14,13 @@ closedSnacks = getClosed(allSnacks,x);
 dispO(openRests,'rest',x);
 dispO(openLibs,'libs',x);
 dispO(openSnacks,'snacks',x);
-dispO(openFacs.concat(openDHs),'facs',x);
+dispO(openFacs,'facs',x);
+dispO(openDHs,'dhs',x);
 dispC(closedRests,'crest',x);
 dispC(closedLibs,'clibs',x);
 dispC(closedSnacks,'csnacks',x);
-dispC(closedFacs.concat(closedDHs),'cfacs',x);
+dispC(closedFacs,'cfacs',x);
+dispO(closedDHs,'cdhs',x);
 
   $('.wd-open > li').tsort();
   $('.wd-closed > li').tsort();

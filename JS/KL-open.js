@@ -142,7 +142,7 @@ function dispC(list, dest, date) {
     var openhours = "Hours: MWF 11AM - 9PM"
     if (disphr==1) hrtag = "hr";
     if (dispmin==1) mintag = "min";
-    $(li).html('<div class="name">{0}</div><div class="timeleft">Opens in {1} {2} {3} {4}</div><div class="ratings hidden showexp">{5}</div><div class="map hidden showexp">{6}</div><div class="address hidden showexp">{7}</div><div class="hours hidden showexp">{8}</div>'.format(list[i].name,disphr,hrtag,dispmin,mintag,rating,maplink,address,openhours ) ).attr('id',list[i].name);
+    $(li).html('<div class="name">{0}</div><div class="timeleft">Opens in {1} {2} {3} {4}</div><div class="ratings hidden showexp">{5}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{7}</div><div class="hours hidden showexp">{8}</div>'.format(list[i].name,disphr,hrtag,dispmin,mintag,rating,maplink,address,openhours ) ).attr('id',list[i].name);
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }
