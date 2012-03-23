@@ -20,7 +20,7 @@ dispC(closedRests,'crest',x);
 dispC(closedLibs,'clibs',x);
 dispC(closedSnacks,'csnacks',x);
 dispC(closedFacs,'cfacs',x);
-dispO(closedDHs,'cdhs',x);
+dispC(closedDHs,'cdhs',x);
 
   $('.wd-open > li').tsort();
   $('.wd-closed > li').tsort();
@@ -38,6 +38,8 @@ dispO(closedDHs,'cdhs',x);
 
   favstime = x;
 
+  var options = { valueNames: [ 'name', 'timeleft'] };
+  var featureList = new List('tab-1', options);
 }
 
 function initialize() {

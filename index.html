@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="text/javascript" src="js/list.min.js"></script>
 <script type="text/javascript" src="js/misc.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/favorites.js"></script>
@@ -59,8 +60,9 @@ What's <span style="color:#0F4D92">Open?</span>
 <input type="button" onclick="alert(document.cookie)" value="Show cookie">
 </div>
 
-<input type="button" value="Hide Open" id="open-toggler">
-<input type="button" value="Show Closed" id="closed-toggler">
+<input type="button" value="Hide Open" id="open-toggler"/>
+<input type="button" value="Show Closed" id="closed-toggler"/>
+
 
 <div id="tabs">
   <ul id="tab_headers">
@@ -73,7 +75,9 @@ What's <span style="color:#0F4D92">Open?</span>
   </ul>
 
   <div id="tab-1" class="tab_content">
-<ul id="rest" class="wd-open">Error displaying open restaurant list</ul>
+  <input class="search" placeholder="Search!"/>
+
+  <ul id="rest" class="list wd-open">Error displaying open restaurant list</ul>
   <ul id="crest" class="wd-closed hidden">Error displaying closed restaurant list</ul>
   </div>
 
@@ -104,6 +108,7 @@ What's <span style="color:#0F4D92">Open?</span>
 
 </div>
 </div>
+
 
 </body>
 </html>
