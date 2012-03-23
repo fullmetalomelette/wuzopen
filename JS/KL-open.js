@@ -67,6 +67,7 @@ function opensIn(x,now) {
     else {return (24-time+tHrs[0][min]);}
   }
   else {
+    if(tHrs[0] == 0 && tHrs[1] == 0) {return -1;}
     if(time<tHrs[0])
       {return (tHrs[0]-time);}
     else
@@ -106,8 +107,8 @@ function dispO(list, dest, date) {
   var printlist = document.getElementById(dest);
   for (var i=0;i<list.length;i++) {
     var li = document.createElement('li');
-    var CT = closesIn(list[i],date);
     $(li).addClass('loc_el');
+    var CT = closesIn(list[i],date);
     var disphr = Math.floor(CT);
     var dispmin = htom(CT);
     var hrtag = "hrs";
@@ -130,19 +131,27 @@ function dispC(list, dest, date) {
   var printlist = document.getElementById(dest);
   for (var i=0;i<list.length;i++) {
     var li = document.createElement('li');
-    var OT = opensIn(list[i],date);
     $(li).addClass('loc_el');
-    var disphr = Math.floor(OT);
-    var dispmin = htom(OT);
-    var hrtag = "hrs";
-    var mintag = "mins";
+
+    var OT = opensIn(list[i],date);
+
+    if (OT == -1) {
+      closetext = "Closed today";
+    }
+    else {
+      var disphr = Math.floor(OT);
+      var dispmin = htom(OT);
+      var hrtag = "hrs";
+      var mintag = "mins";
+      if (disphr==1) hrtag = "hr";
+      if (dispmin==1) mintag = "min";
+      closetext = "Closes in {0} {1} {2} {3}".format(disphr,hrtag,dispmin,mintag);
+    }
     var rating = "*****";
     var maplink = "Maplink!";
     var address = "20 Elm St.";
     var openhours = "Hours: MWF 11AM - 9PM"
-    if (disphr==1) hrtag = "hr";
-    if (dispmin==1) mintag = "min";
-    $(li).html('<div class="name">{0}</div><div class="timeleft">Opens in {1} {2} {3} {4}</div><div class="ratings hidden showexp">{5}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{7}</div><div class="hours hidden showexp">{8}</div>'.format(list[i].name,disphr,hrtag,dispmin,mintag,rating,maplink,address,openhours ) ).attr('id',list[i].name);
+    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div>'.format(list[i].name,closetext,rating,maplink,address,openhours ) ).attr('id',list[i].name);
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }
