@@ -7,19 +7,21 @@ function checkOpen(x,now) {
   var time = chour + cmin/60;
 
   if (!(x.hours[cday][0] instanceof Array)) {
-    if (x.hours[cday][0]<time && time<x.hours[cday][1])
+    if (x.hours[cday][0]<=time && time<x.hours[cday][1])
       {return true;}
     return false;
   }
   else {
     for (var i=0;i<x.hours[cday].length;i++) {
-      if (x.hours[cday][0][i]<time && time<x.hours[cday][1][i])
+      if (x.hours[cday][0][i]<=time && time<x.hours[cday][1][i])
         {return true;}
     }
     return false;
   }
 }
 
+
+// FIX THIS, first make sure closing time checks the NEXT day. Then make sure closing time is accurate over 24 hrs in single case
 function closesIn(x,now) {
   var cday = now.getDay(); //0 sun, 6 sat
   var chour = now.getHours();
@@ -42,6 +44,7 @@ function closesIn(x,now) {
     }
   }
   else {
+    if (time > tHrs[0] && time < tHrs[1]) 
     return (tHrs[1]-time);
   }
 }
@@ -136,7 +139,7 @@ function dispC(list, dest, date) {
     var OT = opensIn(list[i],date);
 
     if (OT == -1) {
-      closetext = "Closed today";
+      opentext = "Closed today";
     }
     else {
       var disphr = Math.floor(OT);
@@ -145,13 +148,13 @@ function dispC(list, dest, date) {
       var mintag = "mins";
       if (disphr==1) hrtag = "hr";
       if (dispmin==1) mintag = "min";
-      closetext = "Closes in {0} {1} {2} {3}".format(disphr,hrtag,dispmin,mintag);
+      opentext = "Opens in {0} {1} {2} {3}".format(disphr,hrtag,dispmin,mintag);
     }
     var rating = "*****";
     var maplink = "Maplink!";
     var address = "20 Elm St.";
     var openhours = "Hours: MWF 11AM - 9PM"
-    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div>'.format(list[i].name,closetext,rating,maplink,address,openhours ) ).attr('id',list[i].name);
+    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div>'.format(list[i].name,opentext,rating,maplink,address,openhours ) ).attr('id',list[i].name);
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }
