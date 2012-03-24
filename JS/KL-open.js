@@ -20,8 +20,14 @@ function checkOpen(x,now) {
   }
 }
 
+/*
+          var temp = tHrs[1][i]-time;
+          now.setMinutes(now.getMinutes() + temp*60);
+          return (temp + closesIn(x,now) );
+*/
 
-// FIX THIS, first make sure closing time checks the NEXT day. Then make sure closing time is accurate over 24 hrs in single case
+
+//Open places closing in __ minutes
 function closesIn(x,now) {
   var cday = now.getDay(); //0 sun, 6 sat
   var chour = now.getHours();
@@ -29,26 +35,83 @@ function closesIn(x,now) {
   var time = chour + cmin/60;
 
   var tHrs = x.hours[cday];
-  if (tHrs[1] instanceof Array) {
+  if (tHrs[0] instanceof Array) { //many open and close times
     for(var i=0;i<tHrs.length;i++) {
-      if (time > tHrs[0][i] && time < tHrs[1][i]) {
+      if (tHrs[0][i] <= time && time < tHrs[1][i]) {
         if(tHrs[1][i]==24) {
-          for (var j=0;j<tHrs.length;j++) {
-            if (tHrs[0][j] == 0)
-              return (tHrs[1][i]-time+tHrs[1][j]);
-          }
-          return (tHrs[1][i]-time);
+          return tHrs[1][i]-time+afterMidnightC(x,cday);
         }
         else { return (tHrs[1][i]-time);}
       }
     }
   }
-  else {
-    if (time > tHrs[0] && time < tHrs[1]) 
-    return (tHrs[1]-time);
+  else { //one open and close time
+    if (tHrs[1]==24) { return tHrs[1]-time+afterMidnightC(x,cday);}
+    else { return (tHrs[1]-time);}
   }
 }
 
+//Find how many hours place is open starting at midnight
+function afterMidnightC(x,prevday) {
+  var curday = prevday+1;
+  if (curday==7) curday = 0;
+
+  var tHrs=x.hours[curday];
+  if (tHrs[0] instanceof Array) {
+    for (var j=0;j<tHrs.length;j++) {
+      if (tHrs[0][j] == 0) { return (tHrs[1][j]);}
+      }
+  }
+  else {
+    if (tHrs[0] == 0) return tHrs[1];
+  }
+  return 0; //no opening hours at 0 found
+}
+
+function closeHr(x,now) {
+  var cday = now.getDay(); //0 sun, 6 sat
+  var chour = now.getHours();
+  var cmin = now.getMinutes();
+  var time = chour + cmin/60;
+  var tHrs = x.hours[cday];
+  if (tHrs[0] instanceof Array) { //many open and close times
+    for(var i=0;i<tHrs.length;i++) {
+      if (tHrs[0][i] <= time && time < tHrs[1][i]) {
+        if(tHrs[1][i]==24) {
+          return fromMidnightHr(x,cday);
+          }
+        else { return tHrs[1][i];}
+      }
+    }
+  }
+  else { //one open and close time
+    if (tHrs[1]==24) {
+      return fromMidnightHr(x,cday);
+      }
+    else { return tHrs[1];}
+  }
+}
+
+function fromMidnightHr(x,prevday) {
+  var curday = prevday + 1;
+  if (curday == 7) curday = 0;
+  
+  var tHrs=x.hours[curday];
+  if (tHrs[0] instanceof Array) {
+    for (var j=0;j<tHrs.length;j++) {
+      if (tHrs[0][j] == 0) { return (tHrs[1][j]);}
+      }
+  }
+  else {
+    if (tHrs[0] == 0) return tHrs[1];
+  }
+  return 0; //no opening hours at 0 found
+
+}
+
+
+//FIX THIS
+//Closed places opening in __ minutes
 function opensIn(x,now) {
   var cday = now.getDay(); //0 sun, 6 sat
   var chour = now.getHours();
@@ -64,19 +127,52 @@ function opensIn(x,now) {
         if (j==-1) j=i;
         else if (tHrs[0][i] < tHrs[0][j]) j=i;
       }
-      if (tHrs[0][i] < tHrs[0][min]) min = i; //find min opening time
+      if (tHrs[0][i] < tHrs[0][min]) min = i; //find min opening time that is greater than now
     }
     if (j!=-1) {return (tHrs[0][j]-time);}
     else {return (24-time+tHrs[0][min]);}
   }
   else {
-    if(tHrs[0] == 0 && tHrs[1] == 0) {return -1;}
+    if(tHrs[0] == 0 && tHrs[1] == 0) {return -1;} //closed today
     if(time<tHrs[0])
       {return (tHrs[0]-time);}
     else
       {return (24-time+tHrs[0]);}
   }
 }
+
+function openHr(x,now) {
+  var cday = now.getDay(); //0 sun, 6 sat
+  var chour = now.getHours();
+  var cmin = now.getMinutes();
+  var time = chour + cmin/60;
+
+  var tHrs = x.hours[cday];
+  var j=-1;
+  var min=0;
+  if (tHrs[0] instanceof Array) {
+    for(var i=0;i<tHrs.length;i++) { //for every pair of opening and closing times
+      if (time < tHrs[0][i]) { //j==-1 unless the current time is less than some opening time
+        if (j==-1) j=i;
+        else if (tHrs[0][i] < tHrs[0][j]) j=i;
+      }
+      if (tHrs[0][i] < tHrs[0][min]) min = i; //find min opening time that is greater than now
+    }
+    if (j!=-1) {return (tHrs[0][j]);}
+    else {return (24-time+tHrs[0][min]);} 
+  }
+  else {
+    if(tHrs[0] == 0 && tHrs[1] == 0) {return -1;} //closed today
+    if(time<tHrs[0])
+      {return (tHrs[0]-time);}
+    else
+      {return (24-time+tHrs[0]);}
+  }
+
+}
+
+
+
 
 
 function getOpen(list,date) {
@@ -104,6 +200,19 @@ function closesSoon( el, time) {
   }
 }
 
+
+function prettyHrs(x) {
+  var mins = htom(x);
+  mins = ( (mins < 10) ? '0':'') + mins;
+  var AMPM;
+  if (0 <= x && x < 1) { x = 12; AMPM = "AM";}
+  else if (12 <= x && x < 13) { AMPM = "PM";}
+  else if (x < 12) { AMPM = "AM";}
+  else { AMPM = "PM"; x=x-12;}
+  
+  return "{0}:{1} {2}".format( Math.floor(x),mins,AMPM);
+}
+
 function dispO(list, dest, date) {
   document.getElementById(dest).innerHTML="";
 
@@ -112,17 +221,25 @@ function dispO(list, dest, date) {
     var li = document.createElement('li');
     $(li).addClass('loc_el');
     var CT = closesIn(list[i],date);
-    var disphr = Math.floor(CT);
-    var dispmin = htom(CT);
-    var hrtag = "hrs";
-    var mintag = "mins";
+
+    if (CT > 2) {
+      var temp = closeHr(list[i],date);
+      closetext = "Closes at {0}".format( prettyHrs(temp) );
+    }
+    else {
+      var disphr = Math.floor(CT);
+      var dispmin = htom(CT);
+      var hrtag = "hrs";
+      var mintag = "mins";
+      if (disphr==1) hrtag = "hr";
+      if (dispmin==1) mintag = "min";
+      closetext = "Closes in {0} {1} {2} {3}".format(disphr,hrtag,dispmin,mintag);
+    }
     var rating = "*****";
     var maplink = "Maplink!";
     var address = "20 Elm St.";
-    var openhours = "Hours: MWF 11AM - 9PM"
-    if (disphr==1) hrtag = "hr";
-    if (dispmin==1) mintag = "min";
-    $(li).html('<div class="name">{0}</div><div class="timeleft">Closes in {1} {2} {3} {4}</div><div class="ratings hidden showexp">{5}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{7}</div><div class="hours hidden showexp">{8}</div>'.format(list[i].name,disphr,hrtag,dispmin,mintag,rating,maplink,address,openhours ) ).attr('id',list[i].name);
+    var openhours = "Hours: MWF 11AM - 9PM";
+    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div>'.format(list[i].name,closetext,rating,maplink,address,openhours ) ).attr('id',list[i].name);
   closesSoon(li,CT);
   printlist.insertBefore(li, printlist.firstChild); 
   }
@@ -140,6 +257,10 @@ function dispC(list, dest, date) {
 
     if (OT == -1) {
       opentext = "Closed today";
+    }
+    else if (OT > 2) {
+      var temp = openHr(list[i],date);
+      opentext = "Closes at {0}".format( prettyHrs(temp) );
     }
     else {
       var disphr = Math.floor(OT);

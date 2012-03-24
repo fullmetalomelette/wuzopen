@@ -11,6 +11,9 @@ closedRests = getClosed(allRests,x);
 closedDHs = getClosed(allDH,x);
 closedSnacks = getClosed(allSnacks,x);
 
+var allO = openFacs.concat(openLibs,openRests,openDHs,openSnacks);
+var allC = closedFacs.concat(closedLibs,closedRests,closedDHs,closedSnacks);
+
 dispO(openRests,'rest',x);
 dispO(openLibs,'libs',x);
 dispO(openSnacks,'snacks',x);
