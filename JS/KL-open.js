@@ -78,7 +78,7 @@ function closeHr(x,now) {
     for(var i=0;i<tHrs.length;i++) {
       if (tHrs[0][i] <= time && time < tHrs[1][i]) {
         if(tHrs[1][i]==24) {
-          return fromMidnightHr(x,cday);
+          return fromMidnightCHr(x,cday);
           }
         else { return tHrs[1][i];}
       }
@@ -86,13 +86,13 @@ function closeHr(x,now) {
   }
   else { //one open and close time
     if (tHrs[1]==24) {
-      return fromMidnightHr(x,cday);
+      return fromMidnightCHr(x,cday);
       }
     else { return tHrs[1];}
   }
 }
 
-function fromMidnightHr(x,prevday) {
+function fromMidnightCHr(x,prevday) {
   var curday = prevday + 1;
   if (curday == 7) curday = 0;
   
@@ -110,7 +110,7 @@ function fromMidnightHr(x,prevday) {
 }
 
 
-//FIX THIS
+//FIX THIS so it takes correct opening time (next day)
 //Closed places opening in __ minutes
 function opensIn(x,now) {
   var cday = now.getDay(); //0 sun, 6 sat
@@ -158,22 +158,36 @@ function openHr(x,now) {
       }
       if (tHrs[0][i] < tHrs[0][min]) min = i; //find min opening time that is greater than now
     }
-    if (j!=-1) {return (tHrs[0][j]);}
-    else {return (24-time+tHrs[0][min]);} 
+    if (j!=-1) {return tHrs[0][j];}
+    else {return fromMidnightOHr(x,cday);}
   }
   else {
     if(tHrs[0] == 0 && tHrs[1] == 0) {return -1;} //closed today
     if(time<tHrs[0])
-      {return (tHrs[0]-time);}
+      {return tHrs[0];}
     else
-      {return (24-time+tHrs[0]);}
+      {return fromMidnightOHr(x,cday);}
   }
-
 }
 
-
-
-
+//Make this work
+function fromMidnightOHr(x,prevday) {
+  var curday = prevday + 1;
+  if (curday == 7) curday = 0;
+  
+  var tHrs=x.hours[curday];
+  var j=0;
+  var min=tHrs[0][0];
+  if (tHrs[1] instanceof Array) {
+      for(var i=1;i<tHrs.length;i++) { //for every pair of opening and closing times
+        if (tHrs[0][i] < tHrs[0][min]) min = i; //find min opening time
+      }
+    return tHrs[0][min];
+  }
+  else {
+    return tHrs[0];
+  }
+}
 
 function getOpen(list,date) {
   var out=new Array();
@@ -256,11 +270,16 @@ function dispC(list, dest, date) {
     var OT = opensIn(list[i],date);
 
     if (OT == -1) {
-      opentext = "Closed today";
+      opentext = "Closed today"; //Possibly change this
     }
     else if (OT > 2) {
       var temp = openHr(list[i],date);
-      opentext = "Closes at {0}".format( prettyHrs(temp) );
+      if (temp < date.getHours()) {
+        opentext = "Closed for the day";
+      }
+      else {
+        opentext = "Opens at {0}".format( prettyHrs(temp) );
+      }
     }
     else {
       var disphr = Math.floor(OT);
