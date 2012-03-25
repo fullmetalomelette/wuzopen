@@ -78,7 +78,7 @@ function closeHr(x,now) {
     for(var i=0;i<tHrs.length;i++) {
       if (tHrs[0][i] <= time && time < tHrs[1][i]) {
         if(tHrs[1][i]==24) {
-          return fromMidnightCHr(x,cday);
+          return afterMidnightC(x,cday);
           }
         else { return tHrs[1][i];}
       }
@@ -86,29 +86,11 @@ function closeHr(x,now) {
   }
   else { //one open and close time
     if (tHrs[1]==24) {
-      return fromMidnightCHr(x,cday);
+      return afterMidnightC(x,cday);
       }
     else { return tHrs[1];}
   }
 }
-
-function fromMidnightCHr(x,prevday) {
-  var curday = prevday + 1;
-  if (curday == 7) curday = 0;
-  
-  var tHrs=x.hours[curday];
-  if (tHrs[0] instanceof Array) {
-    for (var j=0;j<tHrs.length;j++) {
-      if (tHrs[0][j] == 0) { return (tHrs[1][j]);}
-      }
-  }
-  else {
-    if (tHrs[0] == 0) return tHrs[1];
-  }
-  return 0; //no opening hours at 0 found
-
-}
-
 
 //FIX THIS so it takes correct opening time (next day)
 //Closed places opening in __ minutes
@@ -130,14 +112,14 @@ function opensIn(x,now) {
       if (tHrs[0][i] < tHrs[0][min]) min = i; //find min opening time that is greater than now
     }
     if (j!=-1) {return (tHrs[0][j]-time);}
-    else {return (24-time+tHrs[0][min]);}
+    else {return (24-time+fromMidnightOHr(x,cday));}
   }
   else {
     if(tHrs[0] == 0 && tHrs[1] == 0) {return -1;} //closed today
     if(time<tHrs[0])
       {return (tHrs[0]-time);}
     else
-      {return (24-time+tHrs[0]);}
+      {return (24-time+fromMidnightOHr(x,cday));}
   }
 }
 
@@ -170,7 +152,6 @@ function openHr(x,now) {
   }
 }
 
-//Make this work
 function fromMidnightOHr(x,prevday) {
   var curday = prevday + 1;
   if (curday == 7) curday = 0;
@@ -228,12 +209,12 @@ function prettyHrs(x) {
 }
 
 function dispO(list, dest, date) {
-  document.getElementById(dest).innerHTML="";
+//  document.getElementById(dest).innerHTML="";
 
   var printlist = document.getElementById(dest);
   for (var i=0;i<list.length;i++) {
     var li = document.createElement('li');
-    $(li).addClass('loc_el');
+    $(li).addClass('loc_el open_loc');
     var CT = closesIn(list[i],date);
 
     if (CT > 2) {
@@ -253,19 +234,19 @@ function dispO(list, dest, date) {
     var maplink = "Maplink!";
     var address = "20 Elm St.";
     var openhours = "Hours: MWF 11AM - 9PM";
-    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div>'.format(list[i].name,closetext,rating,maplink,address,openhours ) ).attr('id',list[i].name);
+    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div><div class="hidden"><span class="type">{6}</span><span class="isclosed">0</span><div>'.format(list[i].name,closetext,rating,maplink,address,openhours,list[i].type ) ).attr('id',list[i].name);
   closesSoon(li,CT);
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }
 
 function dispC(list, dest, date) {
-  document.getElementById(dest).innerHTML="";
+//  document.getElementById(dest).innerHTML="";
 
   var printlist = document.getElementById(dest);
   for (var i=0;i<list.length;i++) {
     var li = document.createElement('li');
-    $(li).addClass('loc_el');
+    $(li).addClass('loc_el closed_loc hidden');
 
     var OT = opensIn(list[i],date);
 
@@ -294,7 +275,7 @@ function dispC(list, dest, date) {
     var maplink = "Maplink!";
     var address = "20 Elm St.";
     var openhours = "Hours: MWF 11AM - 9PM"
-    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div>'.format(list[i].name,opentext,rating,maplink,address,openhours ) ).attr('id',list[i].name);
+    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div><div class="hidden"><span class="type">{6}</span><span class="isclosed">1</span><div>'.format(list[i].name,opentext,rating,maplink,address,openhours,list[i].type ) ).attr('id',list[i].name);
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }

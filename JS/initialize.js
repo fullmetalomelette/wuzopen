@@ -1,3 +1,6 @@
+var openshown = 1;
+var closedshown = 0;
+
 function data_initialize(x) {
 openFacs = getOpen(allFac,x);
 openLibs = getOpen(allLibs,x);
@@ -14,19 +17,14 @@ closedSnacks = getClosed(allSnacks,x);
 var allO = openFacs.concat(openLibs,openRests,openDHs,openSnacks);
 var allC = closedFacs.concat(closedLibs,closedRests,closedDHs,closedSnacks);
 
-dispO(openRests,'rest',x);
-dispO(openLibs,'libs',x);
-dispO(openSnacks,'snacks',x);
-dispO(openFacs,'facs',x);
-dispO(openDHs,'dhs',x);
-dispC(closedRests,'crest',x);
-dispC(closedLibs,'clibs',x);
-dispC(closedSnacks,'csnacks',x);
-dispC(closedFacs,'cfacs',x);
-dispC(closedDHs,'cdhs',x);
+$('#all_list').html("");
 
-  $('.wd-open > li').tsort();
-  $('.wd-closed > li').tsort();
+dispC(allC,'all_list',x);
+dispO(allO,'all_list',x);
+
+  $('ul#all_list > li').tsort();
+
+//  $('.wd-closed > li').tsort();
 
 //click to expand and contract elements
   $('li.loc_el>div.name').toggle(function() {
@@ -41,18 +39,87 @@ dispC(closedDHs,'cdhs',x);
 
   favstime = x;
 
-  var options = { valueNames: [ 'name', 'timeleft'] };
-  var featureList = new List('tab-1', options);
+  var options = { valueNames: [ 'name','timeleft','isclosed','type'] };
+  var featureList = new List('PlaceList', options);
+
+
+  $('#filterbuttons').children().each(function(){
+    $(this).unbind('click');
+  });
+
+  /*
+  $('#filter-open').click(function() {
+    featureList.filter(function(values) {
+      if (values.isclosed == 0) { return true;}
+      else { return false; }
+    });
+    return false;
+  });
+        
+  $('#filter-closed').click(function() {
+    featureList.filter(function(values) {
+      if (values.isclosed == 1) { return true;}
+      else { return false;}
+    });
+    return false;
+  });
+  */
+
+  $('#filter-libs').click(function() {
+    featureList.filter(function(values) {
+      if (values.type == 'lib') { return true;}
+      else { return false;}
+    });
+    return false;
+  });
+
+  $('#filter-rests').click(function() {
+    featureList.filter(function(values) {
+      if (values.type == 'rest') { return true;}
+      else { return false;}
+    });
+    return false;
+  });
+
+  $('#filter-snacks').click(function() {
+    featureList.filter(function(values) {
+      if (values.type == 'snack') { return true;}
+      else { return false;}
+    });
+    return false;
+  });
+
+  $('#filter-dhs').click(function() {
+    featureList.filter(function(values) {
+      if (values.type == 'dh') { return true;}
+      else { return false;}
+    });
+    return false;
+  });
+
+  $('#filter-misc').click(function() {
+    featureList.filter(function(values) {
+      if (values.type == 'misc') { return true;}
+      else { return false;}
+    });
+    return false;
+  });
+
+  $('#filter-none').click(function() {
+    featureList.filter();
+      return false;
+  });
+
 }
 
 function initialize() {
-  $('#tabs').tabs({fx: {height:'toggle',duration:'fast'}} );
 
   //set favorites on clicking
+  /*
   $('input.favbutton').click(function() {
     $(this).parent().parent().toggleClass('fav');
     toggleCookie( $(this).parent().parent().attr('id') );
-  });
+  });*/
 
 //change time
   $('#input_time').timeEntry({spinnerImage: '',ampmPrefix: ' ', defaultTime:CURTIME});
@@ -65,29 +132,45 @@ function initialize() {
     $("#notifier").html("Time set to " + SETTIME.getHours() +":"+ SETTIME.getMinutes());
  });
 
-//  $(".tab_content").togglepanels(); nested accordion
-
-
 //show open and closed buttons
 
-  $('#open-toggler').toggle(function() {
-      $('ul.wd-open').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
-        $(this).addClass('hidden').removeAttr('style');});
-      this.value="Show Open";},
-    function() {
-      $('ul.wd-open').slideDown('fast').animate({opacity:1,duration:'slow'},function() {  
-      $('ul.wd-open').removeClass('hidden').removeAttr('style');});
-      this.value="Hide Open";});
+  $('ul.filter > li, #time_set').click(function() {
+    if (openshown) {
+      $('.open_loc').removeClass('hidden');
+    }
+    else {
+      $('.open_loc').addClass('hidden');
+    }
+    if (closedshown) {
+      $('.closed_loc').removeClass('hidden');
+    }
+    else {
+      $('.closed_loc').addClass('hidden');
+    }
+  });
 
-  $('#closed-toggler').toggle(function() {
-      $('ul.wd-closed').slideDown('fast').animate({opacity:1,duration:'slow'},function() {  
-      $('ul.wd-closed').removeClass('hidden').removeAttr('style');});
-      this.value="Hide Closed";},
-      function() {
-            $('ul.wd-closed').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
+  $('#open-toggler').toggle(function() {
+      $('.open_loc').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
         $(this).addClass('hidden').removeAttr('style');});
-      this.value="Show Closed";}
-      );
+      this.value="Show Open"; openshown = 0;},
+    function() {
+      $('.open_loc').slideDown('fast').animate({opacity:1,duration:'slow'},function() {  
+      $('.open_loc').removeClass('hidden').removeAttr('style');});
+      this.value="Hide Open"; openshown = 1;
+      });
+
+  $('#closed-toggler').toggle(
+    function() {
+      $('.closed_loc').slideDown('fast').animate({opacity:1,duration:'slow'},function() {  
+      $('.closed_loc').removeClass('hidden').removeAttr('style');});
+      this.value="Hide Closed"; closedshown = 1;},
+    function() {
+            $('.closed_loc').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
+        $(this).addClass('hidden').removeAttr('style');});
+      this.value="Show Closed"; closedshown = 0;
+      });
+
+
 
 /*
 //change backgrounds
@@ -106,7 +189,7 @@ function initialize() {
   });
 */
 
-
+/*
 //Show favorites when last tab is clicked
   $('#tab_headers>li>a').last().click( function() {
     $('#fav_locs,#cfav_locs').html("");
@@ -140,13 +223,11 @@ function initialize() {
     if ($('#cfav_locs').html() == "")
       $('#cfav_locs').html("No closed favorites"); 
   });
+*/
 
   //set cookie initially
 
-  favlist = document.cookie;
-
-  //for (var i=0;i<
-  //$('')
+  //favlist = document.cookie;
 
 
 }

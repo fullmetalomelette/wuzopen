@@ -87,6 +87,18 @@ var openSnacks;
 var closedFacs;
 var closedLibs;
 var closedRests;
-var closedDHs;
+var closedHs;
 var closedSnacks;
+
+function attrAdd(list,type) {
+  for (i=0;i<list.length;i++) list[i].type = type;
+}
+
+attrAdd(allMisc,"misc");
+attrAdd(allFac,"misc");
+attrAdd(allRests,"rest");
+attrAdd(allLibs,"lib");
+attrAdd(allDH,"dh");
+attrAdd(allSnacks,"snack");
+
 
