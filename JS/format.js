@@ -17,6 +17,7 @@ function htom(x) {
   return ((x%1)*60).toFixed(0);
 }
 
+/*
 var reA = /[^a-za-z]/g;
 var reN = /[^0-9]/g;
 function sortAlphaNum(a,b) {
@@ -34,6 +35,6 @@ function sortAlphaNum(a,b) {
 function sortPlaces(a,b) {
   return sortAlphaNum(b.name,a.name);
 }
-
+*/
 
 

@@ -205,7 +205,7 @@ function prettyHrs(x) {
   else if (x < 12) { AMPM = "AM";}
   else { AMPM = "PM"; x=x-12;}
   
-  return "{0}:{1} {2}".format( Math.floor(x),mins,AMPM);
+  return sprintf("%s:%s %s",Math.floor(x),mins,AMPM);
 }
 
 function dispO(list, dest, date) {
@@ -219,7 +219,7 @@ function dispO(list, dest, date) {
 
     if (CT > 2) {
       var temp = closeHr(list[i],date);
-      closetext = "Closes at {0}".format( prettyHrs(temp) );
+      closetext = sprintf("Closes at %s", prettyHrs(temp) );
     }
     else {
       var disphr = Math.floor(CT);
@@ -229,17 +229,17 @@ function dispO(list, dest, date) {
       if (disphr==1) hrtag = "hr";
       if (dispmin==1) mintag = "min";
       if (disphr == 0) {
-        closetext = "Closes in {0} {1}".format(dispmin,mintag);
+        closetext = sprintf("Closes in %s %s",dispmin,mintag);
       }
       else {
-        closetext = "Closes in {0} {1} {2} {3}".format(disphr,hrtag,dispmin,mintag);
+        closetext = sprintf("Closes in %s %s %s %s",disphr,hrtag,dispmin,mintag);
       }
     }
     var rating = "*****";
     var maplink = "Maplink!";
     var address = "20 Elm St.";
     var openhours = "Hours: MWF 11AM - 9PM";
-    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div><div class="hidden"><span class="type">{6}</span><span class="isclosed">0</span><div>'.format(list[i].name,closetext,rating,maplink,address,openhours,list[i].type ) ).attr('id',list[i].name);
+    $(li).html( sprintf('<div class="name">%s</div><div class="timeleft">%s</div><div class="ratings hidden showexp">%s</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">%s</div><div class="hours hidden showexp">%s</div><div class="hidden"><span class="type">%s</span><span class="isclosed">0</span><div>' ,list[i].name,closetext,rating,address,openhours,list[i].type ) ).attr('id',list[i].name);
   closesSoon(li,CT);
   printlist.insertBefore(li, printlist.firstChild); 
   }
@@ -264,7 +264,7 @@ function dispC(list, dest, date) {
         opentext = "Closed for the day";
       }
       else {
-        opentext = "Opens at {0}".format( prettyHrs(temp) );
+        opentext = sprintf("Opens at %s", prettyHrs(temp) );
       }
     }
     else {
@@ -275,17 +275,17 @@ function dispC(list, dest, date) {
       if (disphr==1) hrtag = "hr";
       if (dispmin==1) mintag = "min";
       if (disphr == 0) {
-        opentext = "Opens in {0} {1}".format(dispmin,mintag);
+        opentext = sprintf("Opens in %s %s",dispmin,mintag);
       }
       else {
-        opentext = "Opens in {0} {1} {2} {3}".format(disphr,hrtag,dispmin,mintag);
+        opentext = sprintf("Opens in %s %s %s %s",disphr,hrtag,dispmin,mintag);
       }
     }
     var rating = "*****";
     var maplink = "Maplink!";
     var address = "20 Elm St.";
     var openhours = "Hours: MWF 11AM - 9PM"
-    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div><div class="hidden"><span class="type">{6}</span><span class="isclosed">1</span><div>'.format(list[i].name,opentext,rating,maplink,address,openhours,list[i].type ) ).attr('id',list[i].name);
+    $(li).html( sprintf('<div class="name">%s</div><div class="timeleft">%s</div><div class="ratings hidden showexp">%s</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">%s</div><div class="hours hidden showexp">%s</div><div class="hidden"><span class="type">%s</span><span class="isclosed">1</span><div>',list[i].name,opentext,rating,address,openhours,list[i].type ) ).attr('id',list[i].name);
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }
