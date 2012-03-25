@@ -58,6 +58,11 @@ body {
 	color: #FFFFFF;
 }
 
+a.menu{
+	color: #FFFFFF;
+	text-decoration: none
+}
+
 .closing-soon{
     background-color:#CDCDCD;
 }
@@ -128,7 +133,7 @@ input.search:focus {
 	}
 .name{
 	float:left;
-	width: 580px;
+	width: 680px;
 	}
 .timeleft{
 	float:left;
@@ -160,7 +165,19 @@ input.search:focus {
 	margin-right:20px;
 	}
     
-    
+   
+/*about page*/
+#about{
+	 border-radius: 20px; 
+	 border: 1px solid #000000;
+	 height: 500px;
+	 width: 600px;
+	 margin-left: auto;
+	 margin-right: auto;
+	 padding: 20px;
+}
+	
+	 
     
     
     

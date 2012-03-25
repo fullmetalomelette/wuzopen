@@ -228,7 +228,12 @@ function dispO(list, dest, date) {
       var mintag = "mins";
       if (disphr==1) hrtag = "hr";
       if (dispmin==1) mintag = "min";
-      closetext = "Closes in {0} {1} {2} {3}".format(disphr,hrtag,dispmin,mintag);
+      if (disphr == 0) {
+        closetext = "Closes in {0} {1}".format(dispmin,mintag);
+      }
+      else {
+        closetext = "Closes in {0} {1} {2} {3}".format(disphr,hrtag,dispmin,mintag);
+      }
     }
     var rating = "*****";
     var maplink = "Maplink!";
@@ -269,7 +274,12 @@ function dispC(list, dest, date) {
       var mintag = "mins";
       if (disphr==1) hrtag = "hr";
       if (dispmin==1) mintag = "min";
-      opentext = "Opens in {0} {1} {2} {3}".format(disphr,hrtag,dispmin,mintag);
+      if (disphr == 0) {
+        opentext = "Opens in {0} {1}".format(dispmin,mintag);
+      }
+      else {
+        opentext = "Opens in {0} {1} {2} {3}".format(disphr,hrtag,dispmin,mintag);
+      }
     }
     var rating = "*****";
     var maplink = "Maplink!";
