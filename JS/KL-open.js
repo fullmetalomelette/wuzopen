@@ -241,8 +241,8 @@ function dispO(list, dest, date) {
     }
     var rating = "*****";
     var maplink = "Maplink!";
-    var address = "20 Elm St.";
-    var openhours = "Hours: MWF 11AM - 9PM";
+    var address = list[i].address;
+    var openhours = list[i].prettyhrs;
     $(li).html( sprintf('<div class="name">%s</div><div class="timeleft">%s</div><div class="ratings hidden showexp">%s</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">%s</div><div class="hours hidden showexp">%s</div><div class="hidden"><span class="type">%s</span><span class="isclosed">0</span><div>' ,list[i].name,closetext,rating,address,openhours,list[i].type ) ).attr('id',list[i].name);
   closesSoon(li,CT);
   printlist.insertBefore(li, printlist.firstChild); 
@@ -287,8 +287,8 @@ function dispC(list, dest, date) {
     }
     var rating = "*****";
     var maplink = "Maplink!";
-    var address = "20 Elm St.";
-    var openhours = "Hours: MWF 11AM - 9PM"
+    var address = list[i].address;
+    var openhours = list[i].prettyhrs;
     $(li).html( sprintf('<div class="name">%s</div><div class="timeleft">%s</div><div class="ratings hidden showexp">%s</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">%s</div><div class="hours hidden showexp">%s</div><div class="hidden"><span class="type">%s</span><span class="isclosed">1</span><div>',list[i].name,opentext,rating,address,openhours,list[i].type ) ).attr('id',list[i].name);
   printlist.insertBefore(li, printlist.firstChild); 
   }
