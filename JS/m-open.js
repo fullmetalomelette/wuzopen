@@ -1,5 +1,6 @@
 var CURTIME = new Date();
 
+
 function htom(x) {
   return ((x%1)*60).toFixed(0);
 }
@@ -243,8 +244,10 @@ function dispO(list, dest, date) {
     var maplink = "Maplink!";
     var address = "20 Elm St.";
     var openhours = "Hours: MWF 11AM - 9PM";
-    $(li).html( sprintf('<div class="name">%s</div><div class="timeleft">%s</div><div class="ratings hidden showexp">%s</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">%s</div><div class="hours hidden showexp">%s</div><div class="hidden"><span class="type">%s</span><span class="isclosed">0</span><div>' ,list[i].name,closetext,rating,address,openhours,list[i].type ) ).attr('id',list[i].name);
+  //  $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div><div class="hidden"><span class="type">{6}</span><span class="isclosed">0</span><div>'.format(list[i].name,closetext,rating,maplink,address,openhours,list[i].type) ).attr('id',list[i].name);
+  $(li).html( sprintf('<a href="#sample" data-transition="slide">%s</a>',list[i].name) );
   closesSoon(li,CT);
+//  $("#main_content").append( '<div data-role="popup" id="{0}">hi<div>'.format('#'+list[i].name) );
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }
@@ -289,7 +292,7 @@ function dispC(list, dest, date) {
     var maplink = "Maplink!";
     var address = "20 Elm St.";
     var openhours = "Hours: MWF 11AM - 9PM"
-    $(li).html( sprintf('<div class="name">%s</div><div class="timeleft">%s</div><div class="ratings hidden showexp">%s</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">%s</div><div class="hours hidden showexp">%s</div><div class="hidden"><span class="type">%s</span><span class="isclosed">1</span><div>',list[i].name,opentext,rating,address,openhours,list[i].type ) ).attr('id',list[i].name);
+//    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div><div class="hidden"><span class="type">{6}</span><span class="isclosed">1</span><div>'.format(list[i].name,opentext,rating,maplink,address,openhours,list[i].type ) ).attr('id',list[i].name);
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }

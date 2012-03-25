@@ -2,20 +2,8 @@ var openshown = 1;
 var closedshown = 0;
 
 function data_initialize(x) {
-openFacs = getOpen(allFac,x);
-openLibs = getOpen(allLibs,x);
-openRests = getOpen(allRests,x);
-openDHs = getOpen(allDH,x);
-openSnacks = getOpen(allSnacks,x);
-
-closedFacs = getClosed(allFac,x);
-closedLibs = getClosed(allLibs,x);
-closedRests = getClosed(allRests,x);
-closedDHs = getClosed(allDH,x);
-closedSnacks = getClosed(allSnacks,x);
-
-var allO = openFacs.concat(openLibs,openRests,openDHs,openSnacks);
-var allC = closedFacs.concat(closedLibs,closedRests,closedDHs,closedSnacks);
+var allO = getOpen(allplaceslist,x);
+var allC = getClosed(allplaceslist,x);
 
 $('#all_list').html("");
 
