@@ -152,22 +152,22 @@ function initialize() {
   $('#open-toggler').toggle(function() {
       $('.open_loc').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
         $(this).addClass('hidden').removeAttr('style');});
-      this.value="Show Open"; openshown = 0;},
+      $(this).html("Show Open"); openshown = 0;},
     function() {
       $('.open_loc').slideDown('fast').animate({opacity:1,duration:'slow'},function() {  
       $('.open_loc').removeClass('hidden').removeAttr('style');});
-      this.value="Hide Open"; openshown = 1;
+      $(this).html("Hide Open"); openshown = 1;
       });
 
   $('#closed-toggler').toggle(
     function() {
       $('.closed_loc').slideDown('fast').animate({opacity:1,duration:'slow'},function() {  
       $('.closed_loc').removeClass('hidden').removeAttr('style');});
-      this.value="Hide Closed"; closedshown = 1;},
+      $(this).html("Hide Closed"); closedshown = 1;},
     function() {
             $('.closed_loc').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
         $(this).addClass('hidden').removeAttr('style');});
-      this.value="Show Closed"; closedshown = 0;
+      $(this).html("Show Closed"); closedshown = 0;
       });
 
 
