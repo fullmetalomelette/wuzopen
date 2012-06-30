@@ -10,38 +10,47 @@ document.location = "m-index.html";
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>What's Open?</title>
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="css/jquery-ui.css" type="text/css"/>
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
-<script type="text/javascript" src="js/list.min.js"></script>
-<script type="text/javascript" src="js/sprintf-0.6.js"></script>
+<script type="text/javascript" src="js/jquery.color.js"></script>
+<script type="text/javascript" src="js/all.js"></script>
 <script type="text/javascript" src="js/newdata.js"></script>
-<script type="text/javascript" src="js/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/favorites.js"></script>
-<script type="text/javascript" src="js/jquery.tinysort.min.js"></script>
 <script type="text/javascript" src="js/KL-open.js"></script>
-<script type="text/javascript" src="js/jquery.timeentry.min.js"></script>
-<style type="text/css">@import "css/jquery.timeentry.css";</style>
 <script type="text/javascript" src="js/initialize.js"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-30691659-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<link rel=”icon” href=”images/favicon.ico” /> 
 </head>
-<body>
+<body class="bgdef">
 
+<!-- <div id="back" class="bgrest"></div> -->
 <div id="menu">
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="index.html" class="menu">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="about.html" class="menu">About</a></div>
-
-<div id="title">
-What's <span style="color:#0F4D92">Open?</span>
-</div>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="index.html" class="menu">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="about.html" class="menu">About</a>&nbsp;&nbsp;&nbsp;&nbsp;Time Travel:&nbsp;&nbsp;<a href="#" class="menu" id="timedemo">Song of Time</a>&nbsp;&nbsp;<a href="#" class="menu" id="timedemo2">DeLorean</a>&nbsp;&nbsp;<span style="color:red">New!</span><a href="m-index.html" class="menu" style="float:right;padding-right:20px">Click Here for our Mobile Version</a></div>
 
 
 <div id="wrapper">
 
-<div id="notifier" style="float:right">
+<div id="title" class="title_el">
+<a href="index.html"><img src="images/logotext.png" height=80% style="padding-top:8px"></a>
+<!--<span style="color:#FFFFFF">What's Open?</span>-->
 </div>
 
-<div>
-<p>What's open on 
+
+<div id="future">
+<p>ON
 <select id="weekday_input">
     <option value='1'>Monday</option>
     <option value='2'>Tuesday</option>
@@ -51,44 +60,39 @@ What's <span style="color:#0F4D92">Open?</span>
     <option value='6'>Saturday</option>
     <option value='0'>Sunday</option>
 </select>
- at 
+ AT
 <input type="text" id = "input_time" name="usertime" size="7" label="What's open at: ">
-<input type="button" id="time_set" value="Go">
+<!--<input type="button" id="time_set" value="Go">-->
+<img src="images/gobtn.png" id="time_set" class="gobtn">
 </p>
 </div>
+<div id="notifier"></div>
 
-<!--<div style="float:right">
-<input type="button" onclick="$('#title').css('background-color','white')" value="Restore Title Background Color">
-</div>
-
-<div style="float:right">
-<input type="button" onclick="alert(document.cookie)" value="Show cookie">
-</div>-->
-
-<ul>
-<li class="btn" id="open-toggler">Hide Open</li>
-<li class="btn" id="closed-toggler">Show Closed</li>
-</ul>
-<br/><br/>
+<br />
 
 <div id="PlaceList">
-<input class="search" placeholder="Search!"/>
+<input id="searchbox" class="search" placeholder="Type your search here and hit enter"/>
 <ul class="filter" id="filterbuttons">
-  <li class="btn" id="filter-none">Show all</li>
-  <li class="btn" id="filter-libs">Libraries</li>
-  <li class="btn" id="filter-rests">Restaurants</li>
-  <li class="btn" id="filter-snacks">Coffee/Snacks</li>
-  <li class="btn" id="filter-dhs">Yale Dining</li>
-  <li class="btn" id="filter-misc">Misc</li>
+  <li class="btn2" id="filter-none">Show all</li>
+  <li class="btn2" id="filter-libs">Libraries</li>
+  <li class="btn2" id="filter-rests">Restaurants</li>
+  <li class="btn2" id="filter-snacks">Coffee/Snacks</li>
+  <li class="btn2" id="filter-dhs">Yale Dining</li>
+  <li class="btn2" id="filter-misc">Other</li>
 </ul>
-<br/><br/><br/>
-<ul id="all_list" class="list"></ul>
-</div>
+<br /><br /><br /><br />
+<ul id="show-hide" style="display:none;padding-top:10px">
+<li class="btn" id="open-toggler">Hide Open</li>
+<li class="btnc" id="closed-toggler">Show Closed</li>
+<!--<li class="btn" id="tester">Tester</li>-->
+</ul>
 
+<div style="clear:both;padding-top: 10px;"></div>
+<ul id="all_list" class="list" style="display:none"></ul>
+</div>
+</div> <!-- wrapper -->
 
 
 </body>
-
-
 
 </html>

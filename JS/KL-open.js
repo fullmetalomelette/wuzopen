@@ -162,8 +162,8 @@ function fromMidnightOHr(x,prevday) {
   
   var tHrs=x.hours[curday];
   var j=0;
-  var min=tHrs[0][0];
   if (tHrs[1] instanceof Array) {
+      var min=0;
       for(var i=1;i<tHrs.length;i++) { //for every pair of opening and closing times
         if (tHrs[0][i] < tHrs[0][min]) min = i; //find min opening time
       }
@@ -212,17 +212,10 @@ function prettyHrs(x) {
   return sprintf("%s:%s %s",Math.floor(x),mins,AMPM);
 }
 
-function dispO(list, dest, date) {
-//  document.getElementById(dest).innerHTML="";
-
-  var printlist = document.getElementById(dest);
-  for (var i=0;i<list.length;i++) {
-    var li = document.createElement('li');
-    $(li).addClass('loc_el open_loc');
-    var CT = closesIn(list[i],date);
-
-    if (CT > 2) {
-      var temp = closeHr(list[i],date);
+function getClosingText(CT,loc,date) {
+  var closetext;
+    if (CT > 5) {
+      var temp = closeHr(loc,date);
       closetext = sprintf("Closes at %s", prettyHrs(temp) );
     }
     else {
@@ -232,6 +225,7 @@ function dispO(list, dest, date) {
       var mintag = "mins";
       if (disphr==1) hrtag = "hr";
       if (dispmin==1) mintag = "min";
+      if (dispmin==0) { mintag = ""; dispmin = ""; }
       if (disphr == 0) {
         closetext = sprintf("Closes in %s %s",dispmin,mintag);
       }
@@ -239,31 +233,38 @@ function dispO(list, dest, date) {
         closetext = sprintf("Closes in %s %s %s %s",disphr,hrtag,dispmin,mintag);
       }
     }
-    var rating = "*****";
-    var maplink = "Maplink!";
-    var address = list[i].address;
-    var openhours = list[i].prettyhrs;
-    $(li).html( sprintf('<div class="name">%s</div><div class="timeleft">%s</div><div class="ratings hidden showexp">%s</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">%s</div><div class="hours hidden showexp">%s</div><div class="hidden"><span class="type">%s</span><span class="isclosed">0</span><div>' ,list[i].name,closetext,rating,address,openhours,list[i].type ) ).attr('id',list[i].name);
-  closesSoon(li,CT);
-  printlist.insertBefore(li, printlist.firstChild); 
-  }
+  return closetext;
 }
 
-function dispC(list, dest, date) {
+function dispO(list, dest, date) {
 //  document.getElementById(dest).innerHTML="";
 
   var printlist = document.getElementById(dest);
   for (var i=0;i<list.length;i++) {
     var li = document.createElement('li');
-    $(li).addClass('loc_el closed_loc hidden');
+    $(li).addClass('loc_el open_loc');
+    var CT = closesIn(list[i],date);
+    var closetext=getClosingText(CT,list[i],date);
 
-    var OT = opensIn(list[i],date);
+    var maplink = "Maplink!";
+    var address = list[i].address;
+    var openhours = list[i].prettyhrs;
+    if (openhours == "") {openhours = "No hours data";}
+    var linktext = ""+list[i].link;
+    $(li).html( sprintf('<div class="name">%s</div><div class="timeleft">%s</div><div class="address hidden showexp">%s</div><div class="hours hidden showexp">%s</div><div class="link hidden showexp"></div><div class="hidden"><span class="type">%s</span><span class="isclosed">0</span><div>' ,list[i].name,closetext,address,openhours,list[i].type ) ).attr('id',list[i].uniqid);
+  $(li).find('.link').html(sprintf("<a href='"+linktext+"'>Website</a>"));
+//  closesSoon(li,CT);
+  printlist.insertBefore(li, printlist.firstChild); 
+  }
+}
 
+function getOpeningText(OT,loc,date) {
+    var opentext;
     if (OT == -1) {
       opentext = "Closed today"; //Possibly change this
     }
     else if (OT > 2) {
-      var temp = openHr(list[i],date);
+      var temp = openHr(loc,date);
       if (temp < date.getHours()) {
         opentext = "Closed for the day";
       }
@@ -278,6 +279,7 @@ function dispC(list, dest, date) {
       var mintag = "mins";
       if (disphr==1) hrtag = "hr";
       if (dispmin==1) mintag = "min";
+      if (dispmin==0) {mintag = "";dispmin = ""; }
       if (disphr == 0) {
         opentext = sprintf("Opens in %s %s",dispmin,mintag);
       }
@@ -285,11 +287,27 @@ function dispC(list, dest, date) {
         opentext = sprintf("Opens in %s %s %s %s",disphr,hrtag,dispmin,mintag);
       }
     }
-    var rating = "*****";
+  return opentext;
+}
+
+function dispC(list, dest, date) {
+//  document.getElementById(dest).innerHTML="";
+
+  var printlist = document.getElementById(dest);
+  for (var i=0;i<list.length;i++) {
+    var li = document.createElement('li');
+    $(li).addClass('loc_el closed_loc hidden');
+
+    var OT = opensIn(list[i],date);
+    var opentext = getOpeningText(OT,list[i],date);
+
     var maplink = "Maplink!";
     var address = list[i].address;
     var openhours = list[i].prettyhrs;
-    $(li).html( sprintf('<div class="name">%s</div><div class="timeleft">%s</div><div class="ratings hidden showexp">%s</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">%s</div><div class="hours hidden showexp">%s</div><div class="hidden"><span class="type">%s</span><span class="isclosed">1</span><div>',list[i].name,opentext,rating,address,openhours,list[i].type ) ).attr('id',list[i].name);
+    if (openhours == "") {openhours = "No hours data";}
+    var linktext = ""+list[i].link;
+    $(li).html( sprintf('<div class="name">%s</div><div class="timeleft">%s</div><div class="address hidden showexp">%s</div><div class="hours hidden showexp">%s</div><div class="link hidden showexp"></div><div class="hidden"><span class="type">%s</span><span class="isclosed">1</span><div>',list[i].name,opentext,address,openhours,list[i].type ) ).attr('id',list[i].uniqid);
+  $(li).find('.link').html(sprintf("<a href='"+linktext+"'>Website</a>"));
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }

@@ -1,5 +1,6 @@
 var CURTIME = new Date();
-
+var curplace;
+var curtxt;
 
 function htom(x) {
   return ((x%1)*60).toFixed(0);
@@ -242,15 +243,85 @@ function dispO(list, dest, date) {
     }
     var rating = "*****";
     var maplink = "Maplink!";
-    var address = "20 Elm St.";
-    var openhours = "Hours: MWF 11AM - 9PM";
-  //  $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div><div class="hidden"><span class="type">{6}</span><span class="isclosed">0</span><div>'.format(list[i].name,closetext,rating,maplink,address,openhours,list[i].type) ).attr('id',list[i].name);
-  $(li).html( sprintf('<a href="#sample" data-transition="slide">%s</a>',list[i].name) );
+    var address = list[i].address;
+    var openhours = list[i].prettyhrs;
+
+  $(li).html( sprintf('<a href="#info" data-transition="slide">%s</a>',list[i].name)).attr('id',i).addClass(list[i].type);
   closesSoon(li,CT);
 //  $("#main_content").append( '<div data-role="popup" id="{0}">hi<div>'.format('#'+list[i].name) );
+
+  $(li).on('tap',function(e) {
+    var temp = $(this).attr('id');
+    var loc = allO[temp];
+    infopg(loc,CURTIME,1);
+  });
+
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }
+
+function infopg(loc,date,open) {
+  $('#m-name').html(loc.name);
+  $('#m-addr').html('Address: '+ loc.address);
+  $('#m-ph').html('Hours: ' +loc.prettyhrs);
+  $('#m-link').html("<a href='"+loc.link+"'>"+loc.name+" website</a>");
+  if (open) {
+    var CT = closesIn(loc,date);
+
+    if (CT > 2) {
+      var temp = closeHr(loc,date);
+      closetext = sprintf("Closes at %s", prettyHrs(temp) );
+    }
+    else {
+      var disphr = Math.floor(CT);
+      var dispmin = htom(CT);
+      var hrtag = "hrs";
+      var mintag = "mins";
+      if (disphr==1) hrtag = "hr";
+      if (dispmin==1) mintag = "min";
+      if (disphr == 0) {
+        closetext = sprintf("Closes in %s %s",dispmin,mintag);
+      }
+      else {
+        closetext = sprintf("Closes in %s %s %s %s",disphr,hrtag,dispmin,mintag);
+      }
+    }
+  $('#m-infotxt').html(closetext);
+  }
+  else {
+
+    var OT = opensIn(loc,date);
+
+    if (OT == -1) {
+      opentext = "Closed today"; //Possibly change this
+    }
+    else if (OT > 2) {
+      var temp = openHr(loc,date);
+      if (temp < date.getHours()) {
+        opentext = "Closed for the day";
+      }
+      else {
+        opentext = sprintf("Opens at %s", prettyHrs(temp) );
+      }
+    }
+    else {
+      var disphr = Math.floor(OT);
+      var dispmin = htom(OT);
+      var hrtag = "hrs";
+      var mintag = "mins";
+      if (disphr==1) hrtag = "hr";
+      if (dispmin==1) mintag = "min";
+      if (disphr == 0) {
+        opentext = sprintf("Opens in %s %s",dispmin,mintag);
+      }
+      else {
+        opentext = sprintf("Opens in %s %s %s %s",disphr,hrtag,dispmin,mintag);
+      }
+    }
+  $('#m-infotxt').html(opentext);
+  }
+}
+
 
 function dispC(list, dest, date) {
 //  document.getElementById(dest).innerHTML="";
@@ -258,7 +329,7 @@ function dispC(list, dest, date) {
   var printlist = document.getElementById(dest);
   for (var i=0;i<list.length;i++) {
     var li = document.createElement('li');
-    $(li).addClass('loc_el closed_loc hidden');
+    $(li).addClass('loc_el closed_loc').attr('data-theme','i');
 
     var OT = opensIn(list[i],date);
 
@@ -287,16 +358,26 @@ function dispC(list, dest, date) {
       else {
         opentext = sprintf("Opens in %s %s %s %s",disphr,hrtag,dispmin,mintag);
       }
-    }
+    } 
     var rating = "*****";
     var maplink = "Maplink!";
-    var address = "20 Elm St.";
-    var openhours = "Hours: MWF 11AM - 9PM"
-//    $(li).html('<div class="name">{0}</div><div class="timeleft">{1}</div><div class="ratings hidden showexp">{2}</div><div class="map hidden showexp"><input type="button" class="favbutton" value="Favorite"></div><div class="address hidden showexp">{4}</div><div class="hours hidden showexp">{5}</div><div class="hidden"><span class="type">{6}</span><span class="isclosed">1</span><div>'.format(list[i].name,opentext,rating,maplink,address,openhours,list[i].type ) ).attr('id',list[i].name);
+    var address = list[i].address;
+    var openhours = list[i].prettyhrs;
+
+
+  $(li).html( sprintf('<a href="#info" data-transition="slide">%s</a>',list[i].name)).attr('id',i).addClass(list[i].type);
+//  $("#main_content").append( '<div data-role="popup" id="{0}">hi<div>'.format('#'+list[i].name) );
+
+  $(li).on('tap',function(e) {
+    var temp = $(this).attr('id');
+    var loc = allC[temp];
+    infopg(loc,CURTIME,0);
+  });
+
+
   printlist.insertBefore(li, printlist.firstChild); 
   }
 }
-
 
 
 

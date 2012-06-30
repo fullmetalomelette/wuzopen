@@ -1,9 +1,22 @@
 var openshown = 1;
 var closedshown = 0;
+var initpress = 0;
+var allO;
+var allC;
+var currentlist;
+var updateVar;
+var timefly;
 
 function data_initialize(x) {
-var allO = getOpen(allplaceslist,x);
-var allC = getClosed(allplaceslist,x);
+
+currentlist = allplaceslist.concat(allplaceslist2,allplaceslist3);
+var i;
+for(i=0;i<currentlist.length;i++) {
+  currentlist[i].uniqid = i;
+}
+
+allO = getOpen(currentlist,x);
+allC = getClosed(currentlist,x);
 
 $('#all_list').html("");
 
@@ -15,15 +28,15 @@ dispO(allO,'all_list',x);
 //  $('.wd-closed > li').tsort();
 
 //click to expand and contract elements
-  $('li.loc_el>div.name').toggle(function() {
-      $(this).parent().addClass('expand',200);
-      $(this).parent().find('.showexp').removeClass('hidden').removeAttr('style');
-    },
-    function() {
-      $(this).parent().removeClass('expand',200,function() {
-      $(this).parent().find('.showexp').addClass('hidden').removeAttr('style') ;});
+  $('li.loc_el>div.name').click(function() {
+      if ( $(this).parent().hasClass('expand') ) {
+        $(this).parent().removeClass('expand',200,function() {
+        $(this).find('.showexp').addClass('hidden').removeAttr('style') ;});
       }
-    );
+      else {
+        $(this).parent().addClass('expand',200).find('.showexp').removeClass('hidden').removeAttr('style');
+      }
+    });
 
   favstime = x;
 
@@ -97,28 +110,207 @@ dispO(allO,'all_list',x);
     featureList.filter();
       return false;
   });
+}
+
+
+function timeUpdate(el,open,date) {
+  var text;
+  var thisel=$(el);
+  var elID = thisel.attr('id');
+  var loc = currentlist[elID];
+
+  if (open) {
+    var CT = closesIn(loc,date);
+    text = getClosingText(CT,loc,date);
+  }
+  else {
+    var OT = opensIn(loc,date);
+    text = getOpeningText(OT,loc,date);
+  }
+  thisel.find('div.timeleft').html(text);
+}
+
+function int2day(x) {
+  switch(x) {
+    case '0': return 'Sunday';
+    case '1': return 'Monday';
+    case '2': return 'Tuesday';
+    case '3': return 'Wednesday';
+    case '4': return 'Thursday';
+    case '5': return 'Friday';
+    case '6': return 'Saturday';
+    default: return 'Some Day';
+  }
 
 }
 
+function bgimg(x) {
+  switch(x) {
+    case 'filter-libs': return 'bglib';
+    case 'filter-dhs': return 'bgrest';
+    case 'filter-rests': return 'bgrest';
+    case 'filter-snacks': return 'bgsnack';
+    case 'filter-misc': return 'bgrest';
+    default: return 'bgdef';
+  }
+}
+
+
+
+function updateEls(type) {
+    if(type==0) {CURTIME = new Date();}
+    else if (type==1) { CURTIME.setMinutes( CURTIME.getMinutes() + 1);}
+    else if (type==2) { CURTIME.setHours( CURTIME.getHours() + 1);}
+    if(type!=0) {
+      $("#notifier").html("<span style='color:red'>Traveling forward through time! Now at " + prettyHrs(CURTIME.getHours()+(CURTIME.getMinutes()/60)) + " on " + int2day(''+CURTIME.getDay()) +"</span>");
+      }
+    else {$("#notifier").html("");}
+
+    $('.loc_el').each(function() {
+      var x;
+      var locid = $(this).attr('id');
+      var loc = currentlist[locid];
+      var change = 0;
+/*
+      if(loc==undefined) {
+        alert('hi');
+      }
+*/
+      x = checkOpen(loc,CURTIME);
+
+      if ( x && $(this).hasClass('closed_loc') ) {
+        change = 1; //change to open
+        }
+      if ( !(x) && !($(this).hasClass('closed_loc')) ) {
+        change = -1; //change to closed
+        }
+      timeUpdate(this,x,CURTIME);
+      
+      if(change != 0) {
+        if (change == 1) { //to open
+          $(this).animate({
+            backgroundColor:"#DCDCDC",
+            color:"#000000"
+            },500,function(){
+              $(this).removeClass('closed_loc').addClass('open_loc');
+              if (openshown) {
+                $(this).slideDown('fast').animate({opacity:1,duration:'slow'},function() {  
+                $(this).removeClass('hidden').removeAttr('style');}); }
+              else {
+                $(this).animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
+                $(this).addClass('hidden').removeAttr('style');}); }
+            });
+        }
+        else { //to closed
+          $(this).animate({
+            backgroundColor:"#666666",
+            color:"#FFFFFF"
+            },500,function(){
+              $(this).addClass('closed_loc').removeClass('open_loc');
+              if (closedshown) {
+                $(this).slideDown('fast').animate({opacity:1,duration:'slow'},function() {  
+                $(this).removeClass('hidden').removeAttr('style');}); }
+              else {
+                $(this).animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
+                $(this).addClass('hidden').removeAttr('style');}); }
+            });
+        }
+      }
+
+    });
+}
+
+function beginUpdating() {
+  CURTIME = new Date();
+  updateEls(0);
+  updateVar = setInterval( function() {
+    updateEls(0);
+    },60000);
+}
+
+var t1on=0;
+var t2on=0;
+
 function initialize() {
 
-  //set favorites on clicking
-  /*
-  $('input.favbutton').click(function() {
-    $(this).parent().parent().toggleClass('fav');
-    toggleCookie( $(this).parent().parent().attr('id') );
-  });*/
+  var z = 60-CURTIME.getSeconds();
+  var timer = setTimeout('beginUpdating()',z*1000);
+/*
+  $('#tester').click(function() {
+    CURTIME.setHours(CURTIME.getHours() + 5);
+    updateEls(0);
+  });
+*/
+  $('#timedemo').click( function() {
+    if(initpress==0) initialAnimate();
+    if(!t1on) {
+      timefly = setInterval( function() {
+        updateEls(1);
+      },500);
+      $(this).css('color','yellow');
+      t1on=1;
+    }
+    else {
+      if(timefly) clearInterval(timefly);
+      $(this).removeAttr('style');
+      t1on=0;
+      }
+    });
+
+  $('#timedemo2').click( function() {
+    if(initpress==0) initialAnimate();
+    if(!t2on) {
+      timefly2 = setInterval( function() {
+        updateEls(2);
+      },1000);
+      $(this).css('color','yellow');
+      t2on=1;
+    }
+    else {
+      if(timefly2) clearInterval(timefly2);
+      $(this).removeAttr('style');
+      t2on=0;
+      }
+    });
+
+
+
+  $('body').css('background-size',sprintf('%spx %spx',window.outerWidth,window.outerHeight));
+
+
+  $('ul.filter>li').click(function() {
+    $('ul.filter>li').each(function() {
+      $(this).removeClass('btn2select');
+      });
+    $(this).addClass('btn2select');
+  });
 
 //change time
   $('#input_time').timeEntry({spinnerImage: '',ampmPrefix: ' ', defaultTime:CURTIME});
   $("select#weekday_input option[value="+CURTIME.getDay()+"]").attr("selected", "selected");
   $('#time_set').click( function() {
-    var SETTIME = $('#input_time').timeEntry('getTime');
-    SETTIME.setYear(2000);
-    SETTIME.setMonth(4,$("select#weekday_input option:selected").val());
-    data_initialize(SETTIME);
-    $("#notifier").html("Time set to " + SETTIME.getHours() +":"+ SETTIME.getMinutes());
+    SETTIME = $('#input_time').timeEntry('getTime');
+    if (SETTIME == null) {
+      if (initpress) return;
+      else { initialAnimate(); return;}
+    }
+    else {
+      CURTIME = SETTIME;
+    }
+    CURTIME.setYear(2000);
+    CURTIME.setMonth(4,$("select#weekday_input option:selected").val());
+    data_initialize(CURTIME);
+    if (timer) clearTimeout(timer);
+    if (updateVar) clearInterval(updateVar);
+    if (t1on) $('#timedemo').click();
+    if (t2on) $('#timedemo2').click();
+  $("#notifier").html("Time set to " + prettyHrs(CURTIME.getHours()+(CURTIME.getMinutes()/60)) + " on " + int2day(''+CURTIME.getDay()) );
+    if (initpress) return;
+    else initialAnimate();
  });
+
+
+  $('#input_time').attr('placeholder',prettyHrs(CURTIME.getHours()+(CURTIME.getMinutes()/60)));
 
 //show open and closed buttons
 
@@ -143,81 +335,87 @@ function initialize() {
       $(this).html("Show Open"); openshown = 0;},
     function() {
       $('.open_loc').slideDown('fast').animate({opacity:1,duration:'slow'},function() {  
-      $('.open_loc').removeClass('hidden').removeAttr('style');});
+      $(this).removeClass('hidden').removeAttr('style');});
       $(this).html("Hide Open"); openshown = 1;
       });
 
   $('#closed-toggler').toggle(
     function() {
       $('.closed_loc').slideDown('fast').animate({opacity:1,duration:'slow'},function() {  
-      $('.closed_loc').removeClass('hidden').removeAttr('style');});
+      $(this).removeClass('hidden').removeAttr('style');});
       $(this).html("Hide Closed"); closedshown = 1;},
     function() {
             $('.closed_loc').animate({opacity:0,duration:'fast'}).slideUp('fast', function() {
         $(this).addClass('hidden').removeAttr('style');});
       $(this).html("Show Closed"); closedshown = 0;
       });
-
-
-
 /*
-//change backgrounds
-  $('#tab_headers>li>a').click(function() {
-    temp = (this+'');
-    temp = temp.substring(temp.length-6,temp.length);
-    bd = $('#title');
-    switch(temp) {
-      case '#tab-1': bd.css("background-color","red"); break;
-      case '#tab-2': bd.css("background-color","blue"); break;
-      case '#tab-3': bd.css("background-color","black"); break;
-      case '#tab-4': bd.css("background-color","white"); break;
-      case '#tab-5': bd.css("background-color","white"); break;
-      default: alert(this.parent());
-    }
+  $('ul.filter > li').click(function() {
+    var temp = $(this).attr('id');
+    bg = $('body');
+    var cur = bg.attr('class');
+    if (bgimg(temp) != cur)
+      bg.addClass(bgimg(temp),'fast',function() {bg.removeClass(cur);});
+//    bg.switchClass(bg.attr('class'),bgimg(temp),'slow');
   });
+
 */
 
-/*
-//Show favorites when last tab is clicked
-  $('#tab_headers>li>a').last().click( function() {
-    $('#fav_locs,#cfav_locs').html("");
-    $('li.fav').each( function(ind,el) {
-      var cp = $(this).clone();
-      if ($(el).parent().hasClass('wd-open') ) {
-        $('#fav_locs').append(cp);
-      }
-      else {
-        $('#cfav_locs').append(cp);
-      }
-      $(cp).click(function() {
-      $(el).toggleClass('fav');
-        }).removeClass('expand').find('.showexp').addClass('hidden').removeAttr('style');
-    });
-    $('#fav_locs').tsort();
-    $('#cfav_locs').tsort();
 
-    $('#fav_locs>li.loc_el>div.name,#cfav_locs>li.loc_el>div.name').toggle(function() {
-      $(this).parent().addClass('expand',200);
-      $(this).parent().find('.showexp').removeClass('hidden').removeAttr('style');
+/*
+  $('#title').hover(  function() {
+    $(this).addClass('titlehover','slow');
     },
     function() {
-      $(this).parent().removeClass('expand',200,function() {
-      $(this).parent().find('.showexp').addClass('hidden').removeAttr('style') ;});
-      }
-    );
-
-    if ($('#fav_locs').html() == "")
-      $('#fav_locs').html("No open favorites");
-    if ($('#cfav_locs').html() == "")
-      $('#cfav_locs').html("No closed favorites"); 
+    $(this).removeClass('titlehover','slow');
   });
 */
 
-  //set cookie initially
+  $('#searchbox').keypress(function(e) {
+    if (initpress) return;
+    else if (e.which == 13) {
+      initialAnimate();
+    }
+  });
 
-  //favlist = document.cookie;
+  $('ul.filter > li').click(function() {
+    if (initpress) return;
+    else { initialAnimate();}
+  });
+
+//  preload(['images/rest.jpg','images/SML.jpg','images/Starr.jpg']);
+
+}
+
+/*
+function preload(arrayOfImages) {
+    $(arrayOfImages).each(function(){
+        $('<img/>')[0].src = this;
+    });
+}
+*/
 
 
+function initialAnimate() {
+  $('#wrapper').animate(
+  {marginTop: '80px'},300,function() {
+    $('#show-hide').slideDown(100,function () {
+      $('#all_list').slideDown(300);
+      initpress = 1;
+      $('#searchbox').attr('placeholder','Type your search here');    
+    });
+  });
+}
+
+function bgimg(x) {
+  switch(x) {
+    case 'filter-libs': return 'bglib';
+    case 'filter-dhs': return 'bgrest';
+    case 'filter-rests': return 'bgrest';
+    case 'filter-snacks': return 'bgsnack';
+    case 'filter-misc': return 'bgrest';
+    default: return 'bgdef';
+  }
 }
 
 $(document).ready(function() {

@@ -1,20 +1,42 @@
 var openshown = 1;
 var closedshown = 0;
+var allO;
+var allC;
+
+function filterloc(type) {
+  $('ul#all_list>li').each(function() {
+    if ( $(this).hasClass(type) ) {
+      $(this).addClass('hidden');
+    }
+    else
+      $(this).removeClass('hidden');
+  });
+  $('ul').listview('refresh');
+}
 
 function data_initialize(x) {
-var allO = getOpen(allplaceslist,x);
-var allC = getClosed(allplaceslist,x);
+
+allplaceslist = allplaceslist.concat(allplaceslist2,allplaceslist3);
+
+allO = getOpen(allplaceslist,x);
+allC = getClosed(allplaceslist,x);
 
 //dispC(allC,'all_list',x);
 dispO(allO,'all_list',x);
+dispC(allC,'all_list',x);
 
-  $('ul#all_list > li').tsort();
+$('ul#all_list > li').tsort();
 
 $('ul').listview('refresh');
 
 }
 
 function initialize() {
+/*  $('#resttog').ready( $(this).click(function() {
+    alert('hi');
+    filter('rest');
+  }) );*/
+//loc_el
 
 /*
 //show open and closed buttons
